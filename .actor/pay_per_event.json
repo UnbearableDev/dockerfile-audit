@@ -1,0 +1,12 @@
+{
+    "audit-call": {
+        "eventTitle": "Dockerfile audit call",
+        "eventDescription": "Charged once per call to audit_dockerfile or check_<category> tool. Returns findings with severity, line numbers, remediation, and fix snippets.",
+        "eventPriceUsd": 0.02
+    },
+    "list-checks": {
+        "eventTitle": "List available checks",
+        "eventDescription": "Charged for discovery calls to list_checks. Returns the full check catalog with IDs, categories, severities, and titles.",
+        "eventPriceUsd": 0.005
+    }
+}

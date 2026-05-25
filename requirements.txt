@@ -1,0 +1,11 @@
+# Apify SDK + MCP framework
+apify >= 3.0.0, < 4.0.0
+apify-client
+fastmcp >= 3.0.0, < 4.0.0
+mcp >= 1.25.0, < 2.0.0
+
+# Dockerfile parsing
+dockerfile-parse >= 2.0.0
+
+# HTTP for fetching Dockerfiles by URL
+httpx >= 0.28.0
