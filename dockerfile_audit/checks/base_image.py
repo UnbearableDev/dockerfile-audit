@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable
 
 from dockerfile_audit.findings import DockerfileDoc, Finding, check_meta
@@ -106,6 +107,15 @@ def check_no_digest_pin(doc: DockerfileDoc) -> Iterable[Finding]:
         _, _, digest, _ = _parse_from(value)
         if digest:
             continue
+        # Split off any `AS <alias>` clause so the digest is placed BEFORE the alias.
+        # Dockerfile syntax requires: FROM <image>[@digest] [AS <alias>]
+        as_parts = re.split(r"\s+(AS|as)\s+", value, maxsplit=1)
+        image_part = as_parts[0].strip()
+        if len(as_parts) == 3:
+            # Preserve user's casing of the AS keyword
+            snippet = f"FROM {image_part}@sha256:<digest> {as_parts[1]} {as_parts[2].strip()}"
+        else:
+            snippet = f"FROM {value}@sha256:<digest>"
         yield Finding(
             id="DFA-002",
             category=CATEGORY,
@@ -122,7 +132,7 @@ def check_no_digest_pin(doc: DockerfileDoc) -> Iterable[Finding]:
                 "Add `@sha256:<digest>` after the tag. Get the digest from "
                 "`docker inspect <image>` or the registry UI."
             ),
-            fix_dockerfile_snippet=f"FROM {value}@sha256:<digest>",
+            fix_dockerfile_snippet=snippet,
             references=["CIS-Docker-4.7"],
         )
 

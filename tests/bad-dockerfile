@@ -23,3 +23,6 @@ ADD ./local-file.txt /app/local-file.txt
 ADD https://example.com/installer.sh /tmp/installer.sh
 
 CMD nginx -g 'daemon off;'
+
+FROM alpine:latest AS final
+CMD ["echo", "final"]
