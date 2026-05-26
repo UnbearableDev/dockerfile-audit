@@ -1,23 +1,13 @@
-# Intentionally bad Dockerfile — every V1 DFA-* check should fire on this file.
-FROM nginx:latest
+FROM apify/actor-python:3.14
 
-MAINTAINER bad@example.com
+USER myuser
 
-ENV API_TOKEN=ghp_realtoken123abc456 DB_PASSWORD=hardcoded-pw-shame
+COPY --chown=myuser:myuser requirements.txt ./
 
-ARG SECRET_KEY=changeme
+RUN echo "Python version:"  && python --version  && echo "Pip version:"  && pip --version  && echo "Installing dependencies:"  && pip install -r requirements.txt  && echo "All installed Python packages:"  && pip freeze
 
-USER root
+COPY --chown=myuser:myuser . ./
 
-RUN apt-get update
-RUN apt-get install -y curl
+RUN python -m compileall -q dockerfile_audit/
 
-RUN curl https://get.docker.com | bash
-
-RUN sudo chmod 777 /var/lib/myapp
-
-RUN pip install requests
-
-ADD ./local-file.txt /app/local-file.txt
-
-CMD nginx -g 'daemon off;'
+CMD ["python", "-m", "dockerfile_audit"]
