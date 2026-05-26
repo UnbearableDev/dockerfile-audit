@@ -245,12 +245,55 @@ def check_no_healthcheck(doc: DockerfileDoc) -> Iterable[Finding]:
     )
 
 
+@check_meta(id="DFA-026", severity="medium", title="ADD with remote URL - no integrity verification")
+def check_add_remote_url(doc: DockerfileDoc) -> Iterable[Finding]:
+    # Matches shell form (ADD https://... /dest) and JSON form (["https://...", "/dest"]).
+    url_re = re.compile(r'^\s*\[?\s*"?(https?://[^\s"\]]+)', re.IGNORECASE)
+    for inst in doc.iter_instructions("ADD"):
+        value = inst.get("value", "")
+        if not value:
+            continue
+        m = url_re.match(value)
+        if not m:
+            continue
+        url = m.group(1)
+        yield Finding(
+            id="DFA-026",
+            category=CATEGORY,
+            severity="medium",
+            instruction="ADD",
+            line_number=inst.get("startline", 0) + 1,
+            title="ADD with remote URL - no integrity verification",
+            description=(
+                f"`ADD {url} ...` fetches a remote file at build time with no checksum "
+                f"verification. The upstream can change between rebuilds (non-reproducible), "
+                f"a supply-chain attacker controlling the URL gets arbitrary code into your "
+                f"image, and ADD-from-URL doesn't benefit from layer cache the way local "
+                f"COPY does (image bloat). DFA-024 covers the related `curl | bash` smell; "
+                f"this one is its `ADD` cousin."
+            ),
+            remediation=(
+                "Prefer `RUN curl -fsSL <url> -o <dest> && echo \"<sha256> <dest>\" | "
+                "sha256sum -c -` so the build fails if the upstream changes. Better yet, "
+                "vendor the file into the build context and use `COPY`."
+            ),
+            fix_dockerfile_snippet=(
+                f"RUN curl -fsSL {url} -o /tmp/fetched \\\n"
+                f"    && echo '<sha256-of-file>  /tmp/fetched' | sha256sum -c - \\\n"
+                f"    && <use /tmp/fetched> \\\n"
+                f"    && rm /tmp/fetched"
+            ),
+            references=["Hadolint-DL3020", "OWASP-Supply-Chain"],
+        )
+
+
 CHECKS = [
     check_no_user,
     check_user_root,
     check_sudo_in_run,
     check_chmod_777,
     check_curl_pipe_bash,
+    check_add_remote_url,
     check_hardcoded_secret_env,
     check_no_healthcheck,
 ]

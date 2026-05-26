@@ -65,6 +65,7 @@ async def main():
         "DFA-023",  # chmod 777
         "DFA-024",  # curl|bash
         "DFA-025",  # hardcoded ENV secret
+        "DFA-026",  # ADD https:// (supply-chain)
         "DFA-030",  # apt-get update alone
         "DFA-031",  # apt install without --no-install-recommends
         "DFA-032",  # pip without --no-cache-dir
