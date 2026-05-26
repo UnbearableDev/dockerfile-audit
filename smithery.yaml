@@ -1,0 +1,14 @@
+runtime: external
+type: streamable-http
+url: https://unbearable-dev--dockerfile-audit.apify.actor/mcp
+auth:
+  type: bearer
+  description: Apify API token (any Apify user can generate one in their console)
+metadata:
+  name: dockerfile-audit
+  display_name: Dockerfile Audit
+  description: Hadolint-grade static audit for Dockerfiles — 18 checks across 5 categories, MCP-native
+  tags: [docker, dockerfile, security, audit, devops, linter, hadolint, static-analysis, mcp]
+  license: MIT
+  publisher: unbearabledev
+  homepage: https://github.com/UnbearableDev/dockerfile-audit
