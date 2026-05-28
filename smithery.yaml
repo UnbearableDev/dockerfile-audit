@@ -12,3 +12,13 @@ metadata:
   license: MIT
   publisher: unbearabledev
   homepage: https://github.com/UnbearableDev/dockerfile-audit
+workflow_prompts:
+  - name: audit_dockerfile_local
+    description: Full security and quality audit of a Dockerfile pasted as text. Returns 18 checks with line numbers, severity, and copy-paste fix snippets.
+    prompt: Audit my Dockerfile for security issues and best-practice violations. Here is the content: <paste Dockerfile here>
+  - name: audit_dockerfile_url
+    description: Full audit fetched from a public HTTPS URL (e.g. GitHub raw or a gist). Same output as the local variant.
+    prompt: Audit the Dockerfile at this GitHub raw URL for security and quality issues: https://raw.githubusercontent.com/<owner>/<repo>/main/Dockerfile
+  - name: list_checks
+    description: Browse the full check catalog or filter by category. Useful to understand what the Actor covers before running an audit.
+    prompt: What categories of checks does the dockerfile-audit MCP support? List all available checks.
