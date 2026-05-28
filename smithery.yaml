@@ -11,6 +11,7 @@ metadata:
   tags: [docker, dockerfile, security, audit, devops, linter, hadolint, static-analysis, mcp]
   license: MIT
   publisher: unbearabledev
+  icon: icon.svg
   homepage: https://github.com/UnbearableDev/dockerfile-audit
 workflow_prompts:
   - name: audit_dockerfile_local
