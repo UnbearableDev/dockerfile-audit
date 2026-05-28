@@ -2,7 +2,7 @@
 
 > Hadolint-grade Dockerfile audit as an MCP server. 18+ checks across 5 categories, every finding ships with severity, line number, remediation text, and a copy-paste Dockerfile snippet.
 
-**Built by [Unbearable TechTips](https://github.com/UnbearableDev).** Pay-per-event pricing — only billed when a tool is actually called.
+**Built by [Unbearable Labs](https://github.com/UnbearableDev).** Pay-per-event pricing — only billed when a tool is actually called.
 
 ---
 
@@ -123,7 +123,7 @@ Use `list_checks` to get the canonical, up-to-date catalog.
 - Multi-stage build optimization analysis (DFA-004 / DFA-005 — roadmapped)
 - Compose-file audit (separate MCP: [`docker-compose-audit`](https://apify.com/unbearable_dev/docker-compose-audit))
 
-## Sibling MCPs from Unbearable TechTips
+## Sibling MCPs from Unbearable Labs
 
 - **[`docker-compose-audit`](https://apify.com/unbearable_dev/docker-compose-audit)** — same pattern for `docker-compose.yml`
 - **[`hu-postcode-validator`](https://apify.com/unbearable_dev/hu-postcode-validator)** — Hungarian postcode lookup
